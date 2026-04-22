@@ -1,78 +1,66 @@
-document.getElementById("form-input").addEventListener("input", function() {
-    updateOutput(atob);
-});
-document.getElementById("btnSwitch").addEventListener("click", switchToEncode);
+let mode = "decode";
 
-function switchToDecode() {
+document.getElementById("form-input").addEventListener("input", updateOutput);
+document.getElementById("btnSwitch").addEventListener("click", switchMode);
 
-    document.getElementById("form-input").oninput = function() {
-        updateOutput(atob);
-    };
-
-    document.getElementById("header-text").innerHTML = "base64 decode";
-    document.getElementById("btnSwitch").removeEventListener("click", switchToDecode);
-    document.getElementById("btnSwitch").onclick = switchToEncode;
-
-    document.getElementById("form-input").value = document.getElementById("resultValue").innerHTML;
-    updateOutput(atob);
+function switchMode() {
+    const result = document.getElementById("resultValue").textContent;
+    mode = mode === "decode" ? "encode" : "decode";
+    document.getElementById("header-text").textContent =
+        mode === "decode" ? "base64 decode" : "base64 encode";
+    document.getElementById("form-input").value = result;
+    updateOutput();
 }
 
-function switchToEncode() {
+function updateOutput() {
+    const input = document.getElementById("form-input").value;
 
-    document.getElementById("form-input").oninput = function() {
-        updateOutput(btoa);
-    };
-
-    document.getElementById("header-text").innerHTML = "base64 encode";
-    document.getElementById("btnSwitch").removeEventListener("click", switchToEncode);
-    document.getElementById("btnSwitch").onclick = switchToDecode;
-
-    document.getElementById("form-input").value = document.getElementById("resultValue").innerHTML;
-    updateOutput(btoa);
-}
-
-function updateOutput(transform) {
-
-    let input = document.getElementById("form-input").value;
-    let resultValue = transform(input);
-    document.getElementById("resultValue").innerHTML = resultValue;
-    updateBtnCopy();
-}
-
-function updateBtnCopy() {
-
-    if(document.getElementById("form-input").value === "" && document.getElementById("btnCopy")) {
-        document.getElementById("btnCopy").remove();
-        document.getElementById("resultValue").innerHTML = "";
+    if (!input) {
+        document.getElementById("resultValue").textContent = "";
+        updateCopyButton();
+        return;
     }
-    else {
-        if (document.getElementById("form-input").value && !document.getElementById("btnCopy")) {
 
-            let btn = document.createElement("BUTTON");
-            let contentDiv = document.getElementById("content");
-            contentDiv.appendChild(btn);
+    try {
+        const result = mode === "decode" ? decodeBase64(input) : encodeBase64(input);
+        document.getElementById("resultValue").textContent = result;
+    } catch {
+        document.getElementById("resultValue").textContent = "Invalid input";
+    }
 
-            btn.innerHTML = "Copy";
-            btn.id = "btnCopy";
-            btn.className = "btn"
-            btn.addEventListener("click", copyHashValue);
-        }
+    updateCopyButton();
+}
+
+function encodeBase64(str) {
+    const bytes = new TextEncoder().encode(str);
+    let binary = "";
+    for (const byte of bytes) binary += String.fromCharCode(byte);
+    return btoa(binary);
+}
+
+function decodeBase64(str) {
+    const binary = atob(str.replace(/\s/g, ""));
+    const bytes = Uint8Array.from(binary, c => c.charCodeAt(0));
+    return new TextDecoder().decode(bytes);
+}
+
+function updateCopyButton() {
+    const hasInput = document.getElementById("form-input").value !== "";
+    const btnCopy = document.getElementById("btnCopy");
+
+    if (!hasInput && btnCopy) {
+        btnCopy.remove();
+    } else if (hasInput && !btnCopy) {
+        const btn = document.createElement("button");
+        btn.textContent = "Copy";
+        btn.id = "btnCopy";
+        btn.className = "btn";
+        btn.addEventListener("click", copyResult);
+        document.getElementById("content").appendChild(btn);
     }
 }
 
-function copyHashValue() {
-
-    let hashValue = document.getElementById("resultValue").innerHTML;
-
-    let tempInput = document.createElement("input");
-    tempInput.value = hashValue;
-    tempInput.style.height = 0;
-    tempInput.style.margin = 0;
-    tempInput.style.padding = 0;
-    tempInput.style.border = 0;
-
-    document.body.appendChild(tempInput);
-    tempInput.select();
-    document.execCommand("copy");
-    tempInput.remove();
+async function copyResult() {
+    const text = document.getElementById("resultValue").textContent;
+    await navigator.clipboard.writeText(text);
 }

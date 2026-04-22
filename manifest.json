@@ -1,12 +1,14 @@
 {
-    "manifest_version": 2,
-    "name": "base64 decoder",
-    "description": "Easily en- and decode any text to/from base64 right in your browser!",
-    "version": "1.0.0",
+    "manifest_version": 3,
+    "name": "base64 en- and decoder",
+    "description": "Encode and decode text to/from base64 right in your browser.",
+    "version": "2.0.0",
     "icons": {
+        "16": "icon.png",
+        "48": "icon.png",
         "256": "icon_256.png"
     },
-    "browser_action": {
+    "action": {
         "default_icon": "icon.png",
         "default_popup": "popup.html"
     }

@@ -30,7 +30,7 @@ img {
 
 #header-text {
 
-    color:  #48C74E;
+    color: #48C74E;
     font-size: 2em;
     font-weight: 900;
 }
@@ -49,19 +49,20 @@ img {
 
 #form-input {
 
-    min-height: 2.1em;
     width: 100%;
+    box-sizing: border-box;
     border: 0;
     padding: 0;
 
     background: transparent;
-    border-bottom: solid 2px  white;
-    text-align: center;
+    border-bottom: solid 2px white;
     outline: none;
+    resize: none;
 
-    font-size: 2em;
+    font-size: 1.6em;
     color: white;
     font-family: inherit;
+    text-align: center;
 }
 
 #form-input::placeholder {
@@ -76,7 +77,8 @@ img {
     display: inline-block;
     width: 100%;
 
-    word-wrap: break-word;
+    word-break: break-all;
+    white-space: pre-wrap;
     color: white;
     font-size: 1.6em;
 }
@@ -96,7 +98,7 @@ img {
     background: rgb(220, 220, 220);
     background: linear-gradient(153deg, rgb(220, 220, 220) 0%, rgb(255, 255, 255) 100%);
 
-    color:  #48C74E;
+    color: #48C74E;
     font-size: 2em;
     font-family: inherit;
     cursor: pointer;

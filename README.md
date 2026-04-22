@@ -1,12 +1,21 @@
-# A Chrome extension for easy base64 encoding
+# base64 en- and decoder
 
-The extension can be used by easily clicking on the icon. You can easily en- and decode any text in base64 right in your browser!
+A Chrome extension for encoding and decoding text to/from base64 — right in your browser, no external tools needed.
 
-#### Disclaimer
-I did it in my free time as a really small project. There may be more efficient ways to do it.
+## Usage
 
-The code will produce errors because the preview updates live and when typing character by character it may be not correclty base64 encoded. The errors are, at least in my opinion, nothing to worry about.
+Click the extension icon to open the popup. Start typing or paste text into the field and the result appears instantly. Use the switch button in the header to toggle between decode and encode mode — your current result becomes the new input automatically.
 
-When special characters are used, it won't encode anything, as it's no correct base64 decoded text.
+## Features
 
-The Icon used was made by myself.
+- Live preview as you type
+- Switching modes carries the result over as the new input
+- Full Unicode support (emoji, accented characters, etc.)
+- Handles multi-line text correctly
+- Copy button appears when there's output to copy
+
+## Notes
+
+While typing character by character, intermediate input may not be valid base64. The field will display "Invalid input" until the string is complete — this is expected behaviour, not a bug.
+
+The icon was made by me.
